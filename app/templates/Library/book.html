@@ -1,0 +1,138 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Icons {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="card card-plain">
+            <div class="row">
+                <div class="card col-md-6">
+
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Libros</h4>
+
+                    </div>
+                    <div class="card-body">
+                        <form role="form" method="post" action="">
+
+                            {% csrf_token %}
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">ISBN</label>
+                                        {{ form.isbn }}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Nombre</label>
+                                        {{ form.name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ form.authors }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Paginas</label>
+                                        {{ form.pages }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Fecha de publicado</label>
+                                        {{ form.published_date }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary pull-left" formaction="create">Crear</button>
+                            <button type="submit" class="btn btn-danger pull-left" formaction="delete">Eliminar
+                            </button>
+                            <button type="submit" class="btn btn-info pull-left" formaction="update">Actualizar
+                            </button>
+                            <div class="clearfix"></div>
+
+                        </form>
+                    </div>
+                    {% include 'includes/my_validations.html' %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script>
+        function reverseDate(str) {
+
+            return str.split("-").reverse().join("/");
+
+        }
+    </script>
+    <script>
+        function getBook() {
+            $.ajax({
+                url: "getBook/",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    isbn: $("#id_isbn").val(),
+                }
+                ,
+                success: function (response) {
+                    if (typeof response.msg != 'undefined') {
+                        alert(response.msg);
+                    } else {
+                        let r = JSON.parse(response);
+                        if (r.length > 0) {
+                            let fields = JSON.parse(response)[0].fields;
+                            $("#id_published_date").val(reverseDate(fields.published_date));
+                            $("#id_pages").val(fields.pages);
+                            $("#id_name").val(fields.name);
+                            $("#id_authors option").prop("selected", false);
+                            $.each(fields.authors, function (i, e) {
+                                $("#id_authors option[value='" + e + "']").prop("selected", true);
+                            });
+                        }
+                    }
+                }
+
+            });
+        }
+    </script>
+
+    <script>
+        $(function () {
+
+            $('.datetimepicker').datetimepicker({
+                // dateFormat: 'dd-mm-yy',
+                format: 'DD/MM/YYYY',
+                maxDate: 'now'
+
+            });
+            md.initFormExtendedDatetimepickers();
+        });
+    </script>
+{% endblock javascripts %}

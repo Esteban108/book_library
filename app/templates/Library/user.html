@@ -1,0 +1,58 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Icons {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="card card-plain">
+            <div class="row">
+                <div class="card col-md-6">
+
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Crear nuevo Usuario</h4>
+
+                    </div>
+                    <div class="card-body">
+                        <form role="form" method="post" action="">
+
+                            {% csrf_token %}
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Nombre</label>
+                                        {{ form.name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Edad</label>
+                                        {{ form.age }}
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary pull-left" formaction="create">Crear</button>
+                            <button type="submit" class="btn btn-danger pull-left" formaction="delete">Eliminar
+                            </button>
+                            <button type="submit" class="btn btn-info pull-left" formaction="update">Actualizar
+                            </button>
+                            <div class="clearfix"></div>
+
+                        </form>
+                        {% include 'includes/my_validations.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

@@ -1,0 +1,113 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Icons {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="card card-plain">
+            <div class="row">
+                <div class="card col-md-6">
+
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Autores</h4>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+
+
+                            <form role="form" method="post" action="">
+
+                                {% csrf_token %}
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">Nombre</label>
+                                            {{ form.name }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">Fecha de nacimiento</label>
+                                            {{ form.birth_date }}
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <button type="submit" class="btn btn-primary pull-left" formaction="create">Crear
+                                </button>
+                                <button type="submit" class="btn btn-danger pull-left" formaction="delete">Eliminar
+                                </button>
+                                <button type="submit" class="btn btn-info pull-left" formaction="update">Actualizar
+                                </button>
+                                <div class="clearfix"></div>
+
+                            </form>
+                        </div>
+                        {% include 'includes/my_validations.html' %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script>
+        function reverseDate(str) {
+
+            return str.split("-").reverse().join("/");
+
+        }
+    </script>
+    <script>
+        function getAuthor() {
+            $.ajax({
+                url: "getAuthor/",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    name: $("#id_name").val(),
+                }
+                ,
+                success: function (response) {
+                    if (typeof response.msg != 'undefined') {
+                        alert(response.msg);
+                    } else {
+                        let r = JSON.parse(response);
+                        if (r.length > 0) {
+                            $("#id_birth_date").val(reverseDate(r[0].fields.birth_date));
+                            //reverseString año mes dia, a dia mes año
+                        }
+                    }
+                }
+
+            });
+        }
+
+        $(function () {
+
+            $('.datetimepicker').datetimepicker({
+                // dateFormat: 'dd-mm-yy',
+                format: 'DD/MM/YYYY',
+                maxDate: 'now'
+
+            });
+            md.initFormExtendedDatetimepickers();
+        });
+    </script>
+{% endblock javascripts %}

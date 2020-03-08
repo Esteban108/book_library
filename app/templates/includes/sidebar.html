@@ -1,0 +1,38 @@
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-1.jpg">
+      <div class="logo">
+        <samp class="simple-text logo-normal">
+          Book Library
+        </samp>
+      </div>
+      {% if user.is_authenticated %}
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item {% if 'index' == segment %} active {% endif %}">
+            <a class="nav-link" href="/book">
+              <i class="material-icons">menu_book</i>
+              <p>Libros</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'author' in segment %} active {% endif %}">
+            <a class="nav-link" href="/author/">
+              <i class="material-icons">keyboard</i>
+              <p>autores</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'user' in segment %} active {% endif %}">
+            <a class="nav-link" href="/user/">
+              <i class="material-icons">person</i>
+              <p>Usuarios</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'book_loan' in segment %} active {% endif %}">
+            <a class="nav-link" href="/book_loan/">
+              <i class="material-icons">library_books</i>
+              <p>Prestamos</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+      {% endif %}
+
+    </div>
