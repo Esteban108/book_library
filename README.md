@@ -1,6 +1,6 @@
 # book_library
 
-###setup
+### setup
      docker build https://github.com/Esteban108/book_library.git
      
      docker run  --name book-library -p 8000:8000 book_library
